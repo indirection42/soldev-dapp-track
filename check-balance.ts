@@ -1,10 +1,12 @@
-import { Connection, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
-const suppliedPublicKey = process.argv[2];
-if (!suppliedPublicKey) {
-    throw new Error("Provide a public key as an argument to check the balace!");
+import { clusterApiUrl, Connection, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
+import { resolve } from "@bonfida/spl-name-service";
+const suppliedFriendlyName = process.argv[2]
+if (!suppliedFriendlyName) {
+    throw new Error("Provide a mainnet friendly name as an argument to check the balace!");
 }
-const publicKey = new PublicKey(suppliedPublicKey);
-const connection = new Connection("https://api.devnet.solana.com", "confirmed");
+const connection = new Connection(clusterApiUrl("mainnet-beta"), "confirmed");
+const owner = await resolve(connection, suppliedFriendlyName);
+const publicKey = new PublicKey(owner);
 
 const balanceInLamports = await connection.getBalance(publicKey);
 
