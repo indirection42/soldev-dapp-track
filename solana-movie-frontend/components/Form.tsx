@@ -16,20 +16,19 @@ import {
 } from "@chakra-ui/react";
 import * as web3 from "@solana/web3.js";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-
-const MOVIE_REVIEW_PROGRAM_ID = "CenYq6bDRB7p73EjsPEpiYN7uveyPUTdXkDkgUduboaN";
+import { MOVIE_REVIEW_PROGRAM_ID } from "../utils/constants";
 
 export const Form: FC = () => {
   const [title, setTitle] = useState("");
   const [rating, setRating] = useState(0);
-  const [message, setMessage] = useState("");
+  const [description, setDescription] = useState("");
 
   const { connection } = useConnection();
   const { publicKey, sendTransaction } = useWallet();
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
-    const movie = new Movie(title, rating, message);
+    const movie = new Movie(title, rating, description);
     handleTransactionSubmit(movie);
   };
 
@@ -96,7 +95,7 @@ export const Form: FC = () => {
           <Textarea
             id="review"
             color="gray.400"
-            onChange={(event) => setMessage(event.currentTarget.value)}
+            onChange={(event) => setDescription(event.currentTarget.value)}
           />
         </FormControl>
         <FormControl isRequired>
